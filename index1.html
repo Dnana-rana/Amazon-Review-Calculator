@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Review Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        .container { max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px 20px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #result { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Amazon Review Calculator</h2>
+        <label for="current_reviews">Enter Current Reviews:</label>
+        <input type="number" id="current_reviews" placeholder="e.g. 500" min="0">
+        <label for="current_rating">Enter Current Rating:</label>
+        <input type="number" step="0.1" id="current_rating" placeholder="e.g. 3.8" min="1" max="5">
+        <label for="target_rating">Enter Target Rating:</label>
+        <input type="number" step="0.1" id="target_rating" placeholder="e.g. 4.2" min="1" max="5">
+        <button onclick="calculateReviews()">Calculate</button>
+        <p id="result"></p>
+    </div>
+    <script>
+        function calculateReviews() {
+            let currentReviews = parseInt(document.getElementById("current_reviews").value) || 0;
+            let currentRating = parseFloat(document.getElementById("current_rating").value) || 0;
+            let targetRating = parseFloat(document.getElementById("target_rating").value) || 0;
+            let newReviewRating = 5;
+
+            if (currentReviews < 0 || currentRating < 1 || currentRating > 5 || targetRating < 1 || targetRating > 5) {
+                document.getElementById("result").innerText = "Please enter valid numbers within the allowed range.";
+                return;
+            }
+
+            if (targetRating <= currentRating) {
+                document.getElementById("result").innerText = "Target rating must be higher than the current rating.";
+                return;
+            }
+
+            let X = ((targetRating * currentReviews) - (currentRating * currentReviews)) / (newReviewRating - targetRating);
+            let reviewsNeeded = Math.max(0, Math.ceil(X));
+            document.getElementById("result").innerText = `You need ${reviewsNeeded} additional 5-star reviews.`;
+        }
+    </script>
+</body>
+</html>
